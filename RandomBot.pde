@@ -8,7 +8,7 @@ public class RandomBot implements Bot {
     return name;
   }
   
-  public Color getMove(Color[][] colors, Player[][] players) {
+  public Color getMove(Color[][] colors, Player[][] players, Player curr) {
     ArrayList<Color> valid = new ArrayList<Color>();
     for (Color c : Color.values())
       if (c != colors[0][0] && c != colors[15][15])

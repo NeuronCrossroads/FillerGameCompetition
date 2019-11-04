@@ -16,11 +16,11 @@ public class AIController {
 
   private void step() {
     if (turn == ALICE) {
-      Color move = alice.getMove(game.copiedColors(), game.copiedPlayers());
+      Color move = alice.getMove(game.copiedColors(), game.copiedPlayers(), Player.ALICE);
       game.makeMove(Player.ALICE, move);
       turn = BOB;
     } else if (turn == BOB) {
-      Color move = bob.getMove(game.copiedColors(), game.copiedPlayers());
+      Color move = bob.getMove(game.copiedColors(), game.copiedPlayers(), Player.BOB);
       game.makeMove(Player.BOB, move);
       turn = ALICE;
     }
