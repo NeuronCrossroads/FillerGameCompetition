@@ -10,13 +10,14 @@ void setup() {
 
 void draw() {
   game.render(0,0,width,height);
+  int c = mouseX/(int)(width/16.);
+  int r = mouseY/(int)(height/16.);
 }
 
 void mousePressed() {
   int c = mouseX/(int)(width/16.);
   int r = mouseY/(int)(height/16.);
   Color chosen = game.getColors()[r][c];
-  print(chosen);
   if (currPlayer == Player.ALICE && chosen != game.BOBColor) {
     game.makeMove(Player.ALICE,chosen);
     currPlayer = Player.BOB;
@@ -27,5 +28,6 @@ void mousePressed() {
   }
   for (int i = 0; i < 256; i++) {
     game.updateBoards();
-  }
+  } //<>//
+  print(game.checkWin());
 }

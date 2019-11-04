@@ -64,22 +64,25 @@ class GameBoard {
     
     for (int r = 0; r < 16; r++) {
       for (int c = 0; c < 16; c++) {
-        Color here = colors[r][c];
-        if(r > 0) {
-          Color other = colors[r-1][c];
-          if(here == other) players[r-1][c] = players[r][c];
-        }
-        if (r < 15) {
-          Color other = colors[r+1][c];
-          if(here == other) players[r+1][c] = players[r][c];
-        }
-        if (c > 0) {
-          Color other = colors[r][c-1];
-          if(here == other) players[r][c-1] = players[r][c];
-        }
-        if (c < 15) {
-          Color other = colors[r][c+1];
-          if(here == other) players[r][c+1] = players[r][c];
+        Player pHere = players[r][c];
+        if (pHere != Player.NONE) {
+          Color here = colors[r][c];
+          if(r > 0) {
+            Color other = colors[r-1][c];
+            if(here == other) players[r-1][c] = players[r][c];
+          }
+          if (r < 15) {
+            Color other = colors[r+1][c];
+            if(here == other) players[r+1][c] = players[r][c];
+          }
+          if (c > 0) {
+            Color other = colors[r][c-1];
+            if(here == other) players[r][c-1] = players[r][c];
+          }
+          if (c < 15) {
+            Color other = colors[r][c+1];
+            if(here == other) players[r][c+1] = players[r][c];
+          }
         }
       }
     }
@@ -96,6 +99,49 @@ class GameBoard {
       default:
         break;
     }
+  }
+  
+  private int getCount(Player opt) {
+    int count = 0;
+    for (int r = 0; r < 16; r++) {
+      for (int c = 0; c < 16; c++) {
+        if (players[r][c] == opt) count++;
+      }
+    }
+    return count;
+  }
+  
+  public Color[][] copiedColors() {
+    Color[][] out = new Color[16][16];
+    for (int r = 0; r < 16; r++) {
+      for (int c = 0; c < 16; c++) {
+        out[r][c] = colors[r][c];
+      }
+    }
+    return out;
+  }
+  
+  public Player[][] copiedPlayers() {
+    Player[][] out = new Player[16][16];
+    for (int r = 0; r < 16; r++) {
+      for (int c = 0; c < 16; c++) {
+        out[r][c] = players[r][c];
+      }
+    }
+    return out;
+  }
+  public Player checkWin() {
+    int ac = getCount(Player.ALICE);
+    int bc = getCount(Player.BOB);
+    int nc = getCount(Player.NONE);
+    print(ac+" "+bc+" "+nc+"\n");
+    if (ac + nc < bc) {
+      return Player.BOB;
+    }
+    if (bc + nc < ac) {
+      return Player.ALICE;
+    }
+    return Player.NONE;
   }
   
   public void render(int x, int y, int w, int h) {
@@ -115,9 +161,7 @@ class GameBoard {
         noStroke();
         rect(x+c*ws,y+r*hs,ws,hs);
         if (players[r][c] != Player.NONE) {
-          stroke(0,0,0);
-          strokeWeight(2);
-          fill(255,255,255,sin(frameCount/100.)*100);
+          fill(255,255,255,sin(frameCount/10.)*100+100);
           rect(x+c*ws,y+r*hs,ws,hs);
         }
       }
